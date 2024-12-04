@@ -13,6 +13,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"// Objeto con la respuesta\r",
 							"const responseData = pm.response.json();\r",
 							"\r",
 							"pm.test(\"El código de estado es 200\", function () {\r",
@@ -159,7 +160,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Obtener la respuesta como JSON\r",
+							"// Objeto con la respuesta\r",
 							"const responseData = pm.response.json();\r",
 							"// Constantes para extraer datos de la url\r",
 							"const requestUrl = pm.request.url.toString(); // Url a string\r",

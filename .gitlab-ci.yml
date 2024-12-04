@@ -7,6 +7,14 @@ build:
   script:
     - echo "Construyendo el proyecto..."
 
+unit-test-job:
+  image: mcr.miscrosoft.com/playwright
+  stage: test
+  script: 
+    - npm ci #instalacion limpia package.json
+    - npx playwright install -- with-deps # instala navegadores y dependencias
+    - npx playwright test
+
 test-postman:
   stage: test
   image: node:16 # Usamos una imagen con Node.js preinstalado

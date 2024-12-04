@@ -7,13 +7,25 @@ build:
   script:
     - echo "Construyendo el proyecto..."
 
-unit-test-job:
-  image: mcr.miscrosoft.com/playwright
+# Instalar las dependencias de Node.js
+install_dependencies:
+  stage: install
+  image: node:16  # Usamos una imagen de Node.js que incluye npm
+  script:
+    - npm install  # Instalar todas las dependencias definidas en package.json
+
+# Ejecutar las pruebas de Cypress
+cypress_test:
   stage: test
-  script: 
-    - npm ci #instalacion limpia package.json
-    - npx playwright install -- with-deps # instala navegadores y dependencias
-    - npx playwright test
+  image: cypress/included:12.0.0  # Usamos la imagen oficial de Cypress
+  script:
+    - npm test  # Ejecuta el script "test" que correrá las pruebas de Cypress
+  artifacts:
+    paths:
+      - cypress/videos  # Guardar los videos de las pruebas
+      - cypress/screenshots  # Guardar las capturas de pantalla
+  only:
+    - master  # Ejecutar solo en la rama "master"
 
 test-postman:
   stage: test

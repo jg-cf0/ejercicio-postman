@@ -1,0 +1,19 @@
+stages:
+  - build
+  - test
+
+build
+  stage: build
+  script:
+    - echo "Construyendo el proyecto..."
+
+test-postman
+  stage: test
+  image: node:16 # Usamos una imagen con Node.js preinstalado
+  script:
+    - newman run ./API-PickleRick.postman_collection.json --reporters cli,junit --reporter-junit-export ./newman/results.xml
+  artifacts:
+    paths:
+      - newman/results.xml # Guardar el reporte de resultados
+  only:
+    - main

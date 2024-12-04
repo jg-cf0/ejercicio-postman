@@ -2,12 +2,12 @@ stages:
   - build
   - test
 
-build
+build:
   stage: build
   script:
     - echo "Construyendo el proyecto..."
 
-test-postman
+test-postman:
   stage: test
   image: node:16 # Usamos una imagen con Node.js preinstalado
   script:
@@ -16,4 +16,4 @@ test-postman
     paths:
       - newman/results.xml # Guardar el reporte de resultados
   only:
-    - main
+    - master

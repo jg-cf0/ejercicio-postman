@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "2c07f93e-0195-461b-af30-2ee2747ccc4d",
+		"name": "APIs https://rickandmortyapi.com/",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40091986"
+	},
+	"item": [
+		{
+			"name": "Test 1 - API Todos los personajes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"El código de estado es 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La solicitud devuelve 826 resultados\", function () {\r",
+							"  pm.expect(responseData.info.count).to.eql(826);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene id, name, status, species, type y gender\", function () {\r",
+							"    // Verificar que la respuesta contiene el campo 'results' y es un array\r",
+							"    pm.expect(responseData).to.have.property(\"results\").that.is.an(\"array\");\r",
+							"\r",
+							"    // Iterar sobre cada objeto en el array 'results'\r",
+							"    responseData.results.forEach(item => {\r",
+							"        pm.expect(item).to.be.an(\"object\"); // Asegurarse de que cada elemento es un objeto\r",
+							"\r",
+							"        // Verificar que el objeto tiene al menos los campos requeridos\r",
+							"        pm.expect(item).to.have.property(\"id\");\r",
+							"        pm.expect(item).to.have.property(\"name\");\r",
+							"        pm.expect(item).to.have.property(\"status\");\r",
+							"        pm.expect(item).to.have.property(\"species\");\r",
+							"        pm.expect(item).to.have.property(\"type\");\r",
+							"        pm.expect(item).to.have.property(\"gender\");\r",
+							"\r",
+							"        // Verificar estructuras anidadas (cada personaje tiene su url)\r",
+							"        pm.expect(item).to.have.property(\"origin\").that.is.an(\"object\");\r",
+							"        pm.expect(item.origin).to.have.property(\"name\");\r",
+							"        pm.expect(item.origin).to.have.property(\"url\");\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://rickandmortyapi.com/api/character",
+					"protocol": "https",
+					"host": [
+						"rickandmortyapi",
+						"com"
+					],
+					"path": [
+						"api",
+						"character"
+					]
+				},
+				"description": "Comprobar que la respuesta devuelve todos los personajes listados"
+			},
+			"response": []
+		},
+		{
+			"name": "Test 2 - API Un solo personaje",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Objeto con la respuesta\r",
+							"const responseData = pm.response.json();\r",
+							"// Constantes para extraer datos de la url\r",
+							"const requestUrl = pm.request.url.toString(); // Obtener la URL de la solicitud\r",
+							"const urlId = requestUrl.split('/').pop(); // Extraer el ID del final de la URL\r",
+							"\r",
+							"pm.test(\"El código de estado es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El ID de la URL coincide con el ID en la respuesta\", function () {\r",
+							"    // Comprobar que el ID en la respuesta coincide con el ID de la URL\r",
+							"    pm.expect(responseData.id).to.eql(Number(urlId));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene la longitud esperada en los resultados (1)\", function () {\r",
+							"    // Verificar si la respuesta es un objeto (un solo resultado) o un array (varios resultados)\r",
+							"    if (Array.isArray(responseData.results)) {\r",
+							"        pm.expect(responseData.results.length).to.be.greaterThan(0); // Verifica si el array contiene al menos un elemento\r",
+							"        pm.expect(responseData.results.length).to.eql(1); // Verifica que el array contenga exactamente un elemento\r",
+							"    } else {\r",
+							"        pm.expect(responseData).to.be.an('object'); // Si es un solo personaje, se espera que sea un objeto\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene id, name, status, species, type y gender\", function () {\r",
+							"    // Verificar que la respuesta contiene un único objeto (no un array)\r",
+							"    pm.expect(responseData).to.be.an(\"object\");\r",
+							"\r",
+							"    // Verificar que el objeto tiene los campos requeridos\r",
+							"    pm.expect(responseData).to.have.property(\"id\");\r",
+							"    pm.expect(responseData).to.have.property(\"name\");\r",
+							"    pm.expect(responseData).to.have.property(\"status\");\r",
+							"    pm.expect(responseData).to.have.property(\"species\");\r",
+							"    pm.expect(responseData).to.have.property(\"type\");\r",
+							"    pm.expect(responseData).to.have.property(\"gender\");\r",
+							"\r",
+							"    // Verificar estructuras anidadas (por ejemplo, la propiedad \"origin\")\r",
+							"    pm.expect(responseData).to.have.property(\"origin\").that.is.an(\"object\");\r",
+							"    pm.expect(responseData.origin).to.have.property(\"name\");\r",
+							"    pm.expect(responseData.origin).to.have.property(\"url\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://rickandmortyapi.com/api/character/1",
+					"protocol": "https",
+					"host": [
+						"rickandmortyapi",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						"1"
+					]
+				},
+				"description": "Comprobar que la respuesta devuelve un solo resultado dando igual el número introducido (siempre que la id esté registrada)"
+			},
+			"response": []
+		},
+		{
+			"name": "Test 3 - API Filtrar personajes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Obtener la respuesta como JSON\r",
+							"const responseData = pm.response.json();\r",
+							"// Constantes para extraer datos de la url\r",
+							"const requestUrl = pm.request.url.toString(); // Url a string\r",
+							"const queryString = requestUrl.split('?')[1]; // Obtener la parte de los parámetros\r",
+							"const params = queryString.split('&'); // Separar los parámetros\r",
+							"\r",
+							"\r",
+							"pm.test(\"El código de estado es 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El campo 'name' en los resultados incluye el valor del parámetro 'name' de la URL\", function () {\r",
+							"    let nameParam = '';\r",
+							"\r",
+							"    params.forEach(param => {\r",
+							"        if (param.startsWith('name=')) {\r",
+							"            nameParam = param.split('=')[1].toLowerCase(); // Obtener el valor de 'name' y pasarlo a minúsculas\r",
+							"        }\r",
+							"    });\r",
+							"\r",
+							"    // Iterar sobre todos los resultados y comprobar si el campo 'name' contiene el valor del parámetro\r",
+							"    responseData.results.forEach(result => {\r",
+							"        pm.expect(result.name.toLowerCase()).to.include(nameParam);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El campo 'status' en los resultados coincide con el valor del parámetro 'status' de la URL\", function () {\r",
+							"    let statusParam = '';\r",
+							"\r",
+							"    params.forEach(param => {\r",
+							"        if (param.startsWith('status=')) {\r",
+							"            statusParam = param.split('=')[1].toLowerCase(); // Obtener el valor de 'status' y pasarlo a minúsculas\r",
+							"        }\r",
+							"    });\r",
+							"\r",
+							"    // Iterar sobre todos los resultados y comprobar si el campo 'status' coincide con el valor del parámetro\r",
+							"    responseData.results.forEach(result => {\r",
+							"        pm.expect(result.status.toLowerCase()).to.eql(statusParam);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Todos los filtros de la URL coinciden con los resultados\", function () {\r",
+							"    // Crear un objeto con los filtros de la URL\r",
+							"    let filters = {};\r",
+							"    params.forEach(param => {\r",
+							"        const [key, value] = param.split('=');\r",
+							"        filters[key] = value.toLowerCase(); // Convertir a minúsculas para comparación\r",
+							"    });\r",
+							"\r",
+							"    // Iterar sobre todos los resultados y comprobar cada filtro\r",
+							"    responseData.results.forEach(result => {\r",
+							"        Object.keys(filters).forEach(filter => {\r",
+							"            // Si el filtro está en el resultado, compararlo\r",
+							"            if (result[filter] !== undefined) {\r",
+							"                pm.expect(result[filter].toLowerCase()).to.include(filters[filter]);\r",
+							"            }\r",
+							"        });\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene id, name, status, species, type y gender\", function () {\r",
+							"    // Verificar que la respuesta contiene el campo 'results' y es un array\r",
+							"    pm.expect(responseData).to.have.property(\"results\").that.is.an(\"array\");\r",
+							"\r",
+							"    // Iterar sobre cada objeto en el array 'results'\r",
+							"    responseData.results.forEach(item => {\r",
+							"        pm.expect(item).to.be.an(\"object\"); // Asegurarse de que cada elemento es un objeto\r",
+							"\r",
+							"        // Verificar que el objeto tiene al menos los campos requeridos\r",
+							"        pm.expect(item).to.have.property(\"id\");\r",
+							"        pm.expect(item).to.have.property(\"name\");\r",
+							"        pm.expect(item).to.have.property(\"status\");\r",
+							"        pm.expect(item).to.have.property(\"species\");\r",
+							"        pm.expect(item).to.have.property(\"type\");\r",
+							"        pm.expect(item).to.have.property(\"gender\");\r",
+							"\r",
+							"        // Verificar estructuras anidadas (cada personaje tiene su url)\r",
+							"        pm.expect(item).to.have.property(\"origin\").that.is.an(\"object\");\r",
+							"        pm.expect(item.origin).to.have.property(\"name\");\r",
+							"        pm.expect(item.origin).to.have.property(\"url\");\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://rickandmortyapi.com/api/character/?name=rick&status=alive",
+					"protocol": "https",
+					"host": [
+						"rickandmortyapi",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "rick"
+						},
+						{
+							"key": "status",
+							"value": "alive"
+						}
+					]
+				},
+				"description": "Comprobar que la respuesta filtra adecuadamente al introducir cualquier parámetro"
+			},
+			"response": []
+		}
+	]
+}

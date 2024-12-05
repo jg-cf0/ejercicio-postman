@@ -3,7 +3,9 @@ stages:
 
 postman_test:
   stage: test
-  image: postman/newman
+  image: 
+    name: postman/newman
+    entrypoint: [""]
   script: 
     - newman run API-PickleRick.postman_collection.json
   artifacts:

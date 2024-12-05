@@ -6,3 +6,7 @@ postman_test:
   - image: postman/newman
   - script: 
     - newman run API-PickleRick.postman_collection.json
+  artifacts:
+    reports:
+      junit: newman/*.xml
+    when: always

@@ -2,11 +2,11 @@ stages:
   - test
 
 postman_test:
-  - stage: test
-  - image: postman/newman
-  - script: 
+  stage: test
+  image: postman/newman
+  script: 
     - newman run API-PickleRick.postman_collection.json
   artifacts:
-    reports:
-      junit: newman/*.xml
+    paths:
+      - newman/
     when: always

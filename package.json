@@ -4,13 +4,13 @@
   "main": "index.js",
   "scripts": {
     "test": "cypress run"
-
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "cypress": "^13.16.0"
+    "cypress": "^13.16.0",
+    "newman": "^6.2.1"
   }
 }
